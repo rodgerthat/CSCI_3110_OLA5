@@ -17,7 +17,8 @@ using std::endl;
 // function definitions
 int fibonacci(int n);
 int sum(int n);
-int longest( const int *longestVal, int* endElement, int longestSequence );
+int longest( const int *longestVal, const int* lastElementAddress, int longestSequence );
+int longest2(const int *longestArray, int currentIndex, int arraySize, int longestSequence);
 
 int main()
 {
@@ -41,14 +42,14 @@ int main()
 
 	int arraySize = sizeof(LongestVal) / sizeof(LongestVal[0]); // determine the size of the array
 
-	int lastElement = LongestVal[arraySize-1];	// get the pointer to the last element in the array
+	const int* lastElementAddress = &LongestVal[arraySize-1];	// get the pointer to the last element in the array
 	int longestSequence = 0;
 
-	// #todo : try this : https://www.tutorialspoint.com/cplusplus/cpp_pointer_to_an_array.htm
 
 	cout << endl;
 	cout << "the longest sequence of values in the array is : " << endl;
-	cout << longest(LongestVal, &LongestVal[arraySize-1], longestSequence) << endl;
+	//cout << longest(LongestVal, lastElementAddress, longestSequence) << endl;
+	cout << longest2(LongestVal, 0, arraySize, longestSequence) << endl;
 	
 	//cout << "arraySize : " << arraySize << endl;
 	//cout << "lastElement : " << lastElement << endl;
@@ -84,8 +85,12 @@ int sum(int n) {
 
 // longest sequence function
 // finds the longest positive sequence in an array
-// longest( s[lower .. upper] ) = 1 if lower = upper and s[lower] > 0
-/*
+/* 
+
+longest( s[lower .. upper] ) = 
+
+1 if lower = upper and s[lower] > 0
+
 0 if lower = upper and s[lower] <= 0
 
 0 if lower > upper
@@ -97,8 +102,29 @@ the number of values in the longest sequence of positive
 values starting at the index lower if lower < upper
 */
 
-int longest(int *longestVal, int* endElement, int longestSequence) {
+int longest(const int *longestVal, const int* endElement, int longestSequence) {
 	
 	// base case, we've reached the end of the array
+	return longestSequence;
+	
+}
+
+// i think i have to pass in two indices, lower and upper, 
+// int longest2(const int *longestArray, int lower, int upper, int arraySize, int longestSequence) {
+int longest2(const int *longestArray, int currentIndex, int arraySize, int longestSequence) {
+
+	// base case, we've reaached the end of the array
+	if (currentIndex == arraySize - 1) return longestSequence;
+
+	// 0 if lower = upper and s[lower] <=0
+	if ( ( longestArray[currentIndex] == longestArray[currentIndex +1] ) && ( longestArray[currentIndex] <= 0) ) longestSequence = 0;
+
+	// 0 if lower > upper
+	if (longestArray[currentIndex] > longestArray[currentIndex + 1]) longestSequence = 0;
+
+	// 1 if lower = upper and s[lower] > 0
+	if ((longestArray[currentIndex] == longestArray[currentIndex + 1]) && (longestArray[currentIndex] > 0) ) ++longestSequence;
+
+	longest2(++longestArray, ++currentIndex, arraySize, longestSequence);
 
 }
