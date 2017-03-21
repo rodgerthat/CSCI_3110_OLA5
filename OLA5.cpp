@@ -17,7 +17,7 @@ using std::endl;
 // function definitions
 int fibonacci(int n);
 int sum(int n);
-int longest( *longestVal[]);
+int longest( const int *longestVal, int* endElement, int longestSequence );
 
 int main()
 {
@@ -38,10 +38,21 @@ int main()
 	cout << sum(SumVal) << endl;
 
 	// call the longest value function
+
+	int arraySize = sizeof(LongestVal) / sizeof(LongestVal[0]); // determine the size of the array
+
+	int lastElement = LongestVal[arraySize-1];	// get the pointer to the last element in the array
+	int longestSequence = 0;
+
+	// #todo : try this : https://www.tutorialspoint.com/cplusplus/cpp_pointer_to_an_array.htm
+
 	cout << endl;
 	cout << "the longest sequence of values in the array is : " << endl;
-	cout << longest(LongestVal) << endl;
-
+	cout << longest(LongestVal, &LongestVal[arraySize-1], longestSequence) << endl;
+	
+	//cout << "arraySize : " << arraySize << endl;
+	//cout << "lastElement : " << lastElement << endl;
+	//cout << "lastElementAddress : " << &LongestVal[arraySize - 1] << endl;
 
     return 0;
 	
@@ -73,8 +84,21 @@ int sum(int n) {
 
 // longest sequence function
 // finds the longest positive sequence in an array
-int longest(int *longestVal[]) {
-	
+// longest( s[lower .. upper] ) = 1 if lower = upper and s[lower] > 0
+/*
+0 if lower = upper and s[lower] <= 0
 
+0 if lower > upper
+
+the larger value of longest(s[lower + 1, upper]) and
+
+the number of values in the longest sequence of positive
+
+values starting at the index lower if lower < upper
+*/
+
+int longest(int *longestVal, int* endElement, int longestSequence) {
+	
+	// base case, we've reached the end of the array
 
 }
