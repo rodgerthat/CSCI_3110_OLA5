@@ -13,12 +13,10 @@
 using std::cout;
 using std::endl;
 
-
 // function definitions
 int fibonacci(int n);
 int sum(int n);
-int longest( const int *longestVal, const int* lastElementAddress, int longestSequence );
-int longest2(const int *longestArray, int currentIndex, int arraySize, int longestSequence);
+int longest(const int *longestArray, int activeIndex, int arraySize, int currentSequence, int longestSequence);
 
 int main()
 {
@@ -40,20 +38,11 @@ int main()
 
 	// call the longest value function
 
-	int arraySize = sizeof(LongestVal) / sizeof(LongestVal[0]); // determine the size of the array
-
-	const int* lastElementAddress = &LongestVal[arraySize-1];	// get the pointer to the last element in the array
-	int longestSequence = 0;
-
-
 	cout << endl;
 	cout << "the longest sequence of values in the array is : " << endl;
-	//cout << longest(LongestVal, lastElementAddress, longestSequence) << endl;
-	cout << longest2(LongestVal, 0, arraySize, longestSequence) << endl;
+	int arraySize = sizeof(LongestVal) / sizeof(LongestVal[0]); // determine the size of the array
+	cout << longest(LongestVal, 0, arraySize, 0, 0) << endl;
 	
-	//cout << "arraySize : " << arraySize << endl;
-	//cout << "lastElement : " << lastElement << endl;
-	//cout << "lastElementAddress : " << &LongestVal[arraySize - 1] << endl;
 
     return 0;
 	
@@ -86,45 +75,30 @@ int sum(int n) {
 // longest sequence function
 // finds the longest positive sequence in an array
 /* 
-
 longest( s[lower .. upper] ) = 
-
 1 if lower = upper and s[lower] > 0
-
 0 if lower = upper and s[lower] <= 0
-
 0 if lower > upper
-
 the larger value of longest(s[lower + 1, upper]) and
-
 the number of values in the longest sequence of positive
-
 values starting at the index lower if lower < upper
 */
-
-int longest(const int *longestVal, const int* endElement, int longestSequence) {
+int longest(const int *longestArray, int activeIndex, int arraySize, int currentSequence, int longestSequence) {
 	
-	// base case, we've reached the end of the array
-	return longestSequence;
-	
-}
+	// base case : end of array reached. return longestSequence 
+	if (activeIndex == arraySize) return longestSequence;
 
-// i think i have to pass in two indices, lower and upper, 
-// int longest2(const int *longestArray, int lower, int upper, int arraySize, int longestSequence) {
-int longest2(const int *longestArray, int currentIndex, int arraySize, int longestSequence) {
+	// if the element is > 0, increment the current counter
+	if (longestArray[activeIndex] > 0) ++currentSequence;
 
-	// base case, we've reaached the end of the array
-	if (currentIndex == arraySize - 1) return longestSequence;
+	// if the element is <= 0, reset the current counter to 0
+	if (longestArray[activeIndex] <= 0) currentSequence = 0;
 
-	// 0 if lower = upper and s[lower] <=0
-	if ( ( longestArray[currentIndex] == longestArray[currentIndex +1] ) && ( longestArray[currentIndex] <= 0) ) longestSequence = 0;
+	// if the current counter has gotten longer than the longest recorded sequence, replace it. 
+	if (currentSequence > longestSequence) longestSequence = currentSequence;
 
-	// 0 if lower > upper
-	if (longestArray[currentIndex] > longestArray[currentIndex + 1]) longestSequence = 0;
+	++activeIndex;	// increment up the array one element
 
-	// 1 if lower = upper and s[lower] > 0
-	if ((longestArray[currentIndex] == longestArray[currentIndex + 1]) && (longestArray[currentIndex] > 0) ) ++longestSequence;
-
-	longest2(++longestArray, ++currentIndex, arraySize, longestSequence);
+	longest(longestArray, activeIndex, arraySize, currentSequence, longestSequence); // keep it rollin'
 
 }
