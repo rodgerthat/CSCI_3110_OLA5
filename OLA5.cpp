@@ -6,17 +6,20 @@
  * contains the main program logic for the recursive functions
  * as well as their function definitions and output
  */
-
+#pragma once
 #include <iostream>
+#include <string>
 #include "parameters.h"
 
 using std::cout;
 using std::endl;
+using std::string;
 
 // function definitions
 int fibonacci(int n);
 int sum(int n);
 int longest(const int *longestArray, int activeIndex, int arraySize, int currentSequence, int longestSequence);
+void shortest(string someString, int shortestVal);
 
 int main()
 {
@@ -37,18 +40,24 @@ int main()
 	cout << sum(SumVal) << endl;
 
 	// call the longest value function
-
 	cout << endl;
 	cout << "the longest sequence of values in the array is : " << endl;
 	int arraySize = sizeof(LongestVal) / sizeof(LongestVal[0]); // determine the size of the array
 	cout << longest(LongestVal, 0, arraySize, 0, 0) << endl;
 	
+	// call the shortest function
+	cout << endl;
+	cout << "the shortest word in the given sentence is of length : " << endl;
+	shortest(SentenceVal, 9999);
+	cout << endl;
+	cout << "the end." << endl;
+
 
     return 0;
 	
 }
 
-// fibonacci sequence function
+// fibonacci: a recursive function that computes the fibonacci series.
 int fibonacci(int n) {
 
 	switch (n) {
@@ -101,4 +110,44 @@ int longest(const int *longestArray, int activeIndex, int arraySize, int current
 
 	longest(longestArray, activeIndex, arraySize, currentSequence, longestSequence); // keep it rollin'
 
+}
+
+// shortest: a recursive function that finds the shortest word in a given sentence.
+void shortest(string SentenceVal, int shortestVal) {
+
+	string::size_type pos;
+	pos = SentenceVal.find(' ', 0);	// find the position of the next whitespace char in the string
+
+	// base cases : end of the string is reached
+	// string.find returns huge value
+	if (pos > 9999) {
+		cout << shortestVal << endl;
+		return;
+	}
+	// there can't be a string shorter than 1 so best to just stop.
+	if (shortestVal == 1) {
+		cout << shortestVal << endl;
+		return;
+	}
+	
+	// split the existing string
+	string second = SentenceVal.substr(pos+1);
+	string first = SentenceVal.substr(0,pos); 
+
+	/*
+	cout << "first : " << first << endl;
+	cout << "first.length : " << first.length() << endl;
+	cout << "second : " << second << endl;
+	cout << "shortestVal : " << shortestVal << endl;
+	cout << "---------------------------------------------" << endl;
+	*/
+
+	// check the length of the first word in the string.
+	// if it's shorter than the currently tracked shortest value, 
+	// assign it as the new shortest value
+	if ( int(first.length()) < shortestVal) shortestVal = int(first.length());
+
+	// pass the rest of the string and the parameters through to the next function call
+	shortest(second, shortestVal);
+	
 }
