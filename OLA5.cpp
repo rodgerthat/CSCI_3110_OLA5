@@ -18,6 +18,7 @@ using std::string;
 // function definitions
 int fibonacci(int n);
 int sum(int n);
+int factorial(int n);
 int longest(const int *longestArray, int activeIndex, int arraySize, int currentSequence, int longestSequence);
 void shortest(string someString, int shortestVal);
 
@@ -38,6 +39,11 @@ int main()
 	cout << endl;
 	cout << "sum of all integers through " << SumVal << endl;
 	cout << sum(SumVal) << endl;
+
+	// call the factorial function
+	cout << endl;
+	cout << "product of all integers through " << FacVal << endl;
+	cout << factorial(FacVal) << endl;
 
 	// call the longest value function
 	cout << endl;
@@ -78,6 +84,16 @@ int sum(int n) {
 	case 0: return 0; break;
 	case 1: return 1; break;
 	default: return n + sum(n-1);
+	}
+}
+
+// factorial function
+// returns the product of all ints through n
+int factorial(int n) {
+	switch (n) {
+	case 0: return 0; break;
+	case 1: return 1; break;
+	default: return factorial(n - 1) * n;
 	}
 }
 
