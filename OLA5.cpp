@@ -90,8 +90,8 @@ int sum(int n) {
 // factorial function
 // returns the product of all ints through n
 int factorial(int n) {
+
 	switch (n) {
-	case 0: return 0; break;
 	case 1: return 1; break;
 	default: return factorial(n - 1) * n;
 	}
